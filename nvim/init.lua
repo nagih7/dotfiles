@@ -7,6 +7,3 @@ require("core.highlight")
 require("core.keymaps")
 require("core.commands")
 require("core.autocmds")
-require("lazy").setup({
-    lockfile = vim.fn.stdpath("data") .. "/lazy-lock.json",
-})

@@ -2,7 +2,7 @@
 return {
   "nvim-treesitter/nvim-treesitter-textobjects",
   event = "VeryLazy",
-  dependencies = "nvim-treesitter/nvim-treesitter",
+  -- dependencies = "nvim-treesitter/nvim-treesitter",
   specs = {
     {
       "nvim-treesitter/nvim-treesitter",

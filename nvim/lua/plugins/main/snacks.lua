@@ -20,7 +20,6 @@ local exclude_find = {
 
 ---@type LazySpec
 return {
-  name = "Snacks",
   "folke/snacks.nvim",
   enabled = true,
   init = function()

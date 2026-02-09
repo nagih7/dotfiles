@@ -14,5 +14,5 @@ return {
     enable = false,
   },
   main = "treesitter-context",
-  dependencies = "nvim-treesitter/nvim-treesitter",
+  -- dependencies = "nvim-treesitter/nvim-treesitter",
 }
