@@ -129,7 +129,7 @@ M.cheatsheet = {
 
 M.base46 = {
   theme = "catppuccin",
-  transparency = false,
+  transparency = true,
   theme_toggle = { "catppuccin", "one_light" },
   integrations = {
     "blankline",
