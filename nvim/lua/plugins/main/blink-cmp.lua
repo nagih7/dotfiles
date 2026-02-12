@@ -13,6 +13,14 @@ return {
     appearance = {
       nerd_font_variant = "normal",
     },
+    completion = {
+      list = {
+        selection = {
+          preselect = false,
+          auto_insert = false,
+        },
+      },
+    },
     keymap = {
       ["<C-space>"] = {
         "show",
@@ -76,7 +84,7 @@ return {
         "fallback",
       },
       ["<CR>"] = {
-        "select_and_accept",
+        "accept",
         "fallback",
       },
     },
