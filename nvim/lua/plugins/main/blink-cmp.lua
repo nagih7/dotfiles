@@ -55,11 +55,11 @@ return {
         "fallback",
       },
       ["<Up>"] = {
-        "select_prev",
+        -- "select_prev",
         "fallback",
       },
       ["<Down>"] = {
-        "select_next",
+        -- "select_next",
         "fallback",
       },
       ["<C-p>"] = {
