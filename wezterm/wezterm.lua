@@ -14,8 +14,10 @@ end
 
 local path_file = os.getenv("HOME") .. "/.local/state/quickshell/user/generated/wallpaper/path.txt"
 local bg_image = read_file(path_file)
+local hue = 1
 local brightness = 0.05
-local opacity = 0.8
+local opacity = 1
+local saturation = 0.7
 
 local font = wezterm.font("JetBrainsMono Nerd Font", { weight = "Regular", stretch = "Normal" })
 local font_size = 14
@@ -36,8 +38,8 @@ local function get_random_bg(folder)
     return nil
 end
 
-local function update_appearance(window)
-    window:set_config_overrides({
+local function apply_appearance(overrides)
+    local appearance = {
         font = font,
         font_size = font_size,
         background = {
@@ -48,10 +50,22 @@ local function update_appearance(window)
                 opacity = opacity,
                 horizontal_align = 'Center',
                 vertical_align = 'Middle',
-                hsb = { brightness = brightness },
+                hsb = { 
+                    hue = hue, 
+                    brightness = brightness, 
+                    saturation = saturation
+                },
             },
         },
-    })
+    }
+    
+    if overrides then
+        overrides:set_config_overrides(appearance)
+    else
+        config.font = appearance.font
+        config.font_size = appearance.font_size
+        config.background = appearance.background
+    end
 end
 
 config.font = font
@@ -65,17 +79,7 @@ config.front_end = "WebGpu"
 config.allow_square_glyphs_to_overflow_width = "Always"
 config.adjust_window_size_when_changing_font_size = false
 
-config.background = {
-    {
-        source = { File = bg_image },
-        width = 'Cover',
-        height = 'Cover',
-        opacity = opacity,
-        horizontal_align = 'Center',
-        vertical_align = 'Middle',
-        hsb = { brightness = brightness },
-    },
-}
+apply_appearance()
 
 config.keys = {
     {
@@ -85,7 +89,7 @@ config.keys = {
             local new_bg = get_random_bg(background_folder)
             if new_bg then
                 bg_image = new_bg
-                update_appearance(window)
+                apply_appearance(window)
                 wezterm.log_info("New bg: " .. bg_image)
             end
         end),
@@ -95,7 +99,7 @@ config.keys = {
         mods = "CTRL|SHIFT",
         action = wezterm.action_callback(function(window)
             brightness = math.min(brightness + 0.05, 1.0)
-            update_appearance(window)
+            apply_appearance(window)
         end),
     },
     {
@@ -103,7 +107,7 @@ config.keys = {
         mods = "CTRL|SHIFT",
         action = wezterm.action_callback(function(window)
             brightness = math.max(brightness - 0.05, 0.0)
-            update_appearance(window)
+            apply_appearance(window)
         end),
     },
     {
