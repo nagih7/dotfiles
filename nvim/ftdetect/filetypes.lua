@@ -4,5 +4,6 @@ vim.filetype.add({
     ["regex"] = "regex",
     ["tf"] = "terraform",
     ["tfvars"] = "terraform",
+    ["nix"] = "nix",
   },
 })
