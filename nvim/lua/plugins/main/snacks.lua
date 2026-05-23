@@ -192,7 +192,10 @@ return {
     {
       "<leader>fw",
       function()
-        Snacks.picker.grep()
+        Snacks.picker.grep({
+          hidden = true,
+          ignored = true,
+        })
       end,
       desc = "Find | Words",
     },

@@ -78,7 +78,7 @@ M.nvdash = {
       txt = "󰈭  Find Word",
       hl = "NvDashButton",
       keys = "<Spc>fw",
-      cmd = "lua Snacks.picker.grep()",
+      cmd = "lua Snacks.picker.grep({ hidden = true })",
     },
     {
       txt = "󱥚  Themes",
