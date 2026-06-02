@@ -10,7 +10,7 @@ return {
   },
 
   rock = {
-    hererocks = true,
+    hererocks = false, -- NixOS: use system luarocks instead of downloading hererocks
   },
 
   ui = {

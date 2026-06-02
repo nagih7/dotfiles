@@ -3,13 +3,26 @@
 ---@type Preferences
 local M = {
   lsp = {
+    -- Servers to force-enable. filter_availabled_external=true means binary must be in PATH.
+    -- after/lsp/<server>.lua provides per-server settings automatically.
     force = {
-      "sonarlint", -- NOTE: nvim-lspconfig doesn't support it yet
+      "sonarlint",    -- custom cmd in after/lsp/sonarlint.lua
+      "nil_ls",       -- Nix: nil
+      "gopls",        -- Nix: gopls
+      "vtsls",        -- Nix: vtsls (TypeScript)
+      "basedpyright", -- Nix: basedpyright (Python static analysis)
+      "ruff",         -- Nix: ruff (Python linter/formatter as LSP)
+      "rust_analyzer",-- Nix: rust-analyzer
+      "cssls",        -- Nix: vscode-langservers-extracted
+      "html",
+      "jsonls",
+      "eslint",
+      "terraformls",  -- Nix: terraform-ls
+      "helm_ls",      -- Nix: helm-ls (via qvalentin/helm-ls.nvim or binary)
+      "clangd",       -- Nix: clang-tools (C/C++)
     },
     exclude = {
-      "ts_ls",
       "dartls",
-      "rust_analyzer",
       "jdtls",
       "sqls",
     },

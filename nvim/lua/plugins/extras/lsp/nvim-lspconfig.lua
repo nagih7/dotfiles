@@ -36,6 +36,7 @@ return {
     },
   },
   config = function()
+    require("nvchad.configs.lspconfig").defaults() -- lua_ls settings + global nvchad capabilities
     lsp.setup()
     setup_custom_lsps()
   end,
