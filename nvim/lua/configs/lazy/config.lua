@@ -1,5 +1,8 @@
 ---@type LazyConfig
 return {
+  -- Lockfile outside config dir so it's writable when config is a Nix store path (read-only).
+  lockfile = vim.fn.stdpath("data") .. "/lazy-lock.json",
+
   defaults = {
     lazy = true,
   },
