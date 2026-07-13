@@ -221,3 +221,7 @@ chpwd() {
 # === MODERN CLI TOOL PREFERENCES ===
 export EZA_COLORS="da=36:di=34:fi=0:ln=35:pi=33:so=32:bd=33:cd=33:or=31:mi=31:ex=32"
 eval "$(direnv hook zsh)"
+# BEGIN ANSIBLE MANAGED — devbox role
+eval "$(starship init zsh)"
+eval "$(direnv hook zsh)"
+# END ANSIBLE MANAGED — devbox role
