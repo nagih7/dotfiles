@@ -6,6 +6,11 @@
 typeset -U PATH path  # Remove duplicates from PATH
 export PATH="$HOME/.local/bin:$PATH"
 
+# Rust toolchain. rustup was installed with --no-modify-path so it would not
+# rewrite this file (it is a symlink into the dotfiles repo); PATH is set here
+# instead. Mason needs cargo on PATH to build crate-based servers such as nil.
+[ -d "$HOME/.cargo/bin" ] && export PATH="$HOME/.cargo/bin:$PATH"
+
 # Set up Bat alternative name on Ubuntu (Ubuntu installs it as batcat)
 if command -v batcat &> /dev/null; then
     alias bat="batcat"

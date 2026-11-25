@@ -1,4 +1,10 @@
-local is_nix = vim.fn.isdirectory("/nix/store") == 1
+-- What this flag really gates is "does this nvim ship Nix-provided parsers", so test
+-- where the running binary came from, not merely whether Nix exists on the machine.
+-- Probing /nix/store broke on any non-NixOS host with Nix installed for packaging:
+-- the flag flipped true, auto_install was switched off and :TSUpdate skipped, while
+-- no bundled parsers appeared. fs_realpath resolves ~/.nix-profile-style symlinks.
+local nvim_path = vim.uv.fs_realpath(vim.v.progpath) or vim.v.progpath or ""
+local is_nix = nvim_path:match("^/nix/store") ~= nil
 local writable_path = vim.fn.stdpath("data") .. "/treesitter-parsers"
 
 return {
