@@ -23,6 +23,10 @@ return {
     enabled = true,
   },
   {
+    import = "plugins.extras.languages.graphql",
+    enabled = true,
+  },
+  {
     import = "plugins.extras.languages.hcl",
     enabled = true,
   },
