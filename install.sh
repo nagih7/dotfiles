@@ -48,6 +48,21 @@ sudo_ok() { have sudo && sudo -n true 2>/dev/null; }
 
 is_nixos() { [ -e /etc/NIXOS ]; }
 
+# Run a headless nvim command. nvim exits 0 even when Lua raises, so detect
+# trouble in the output itself; show it in full rather than a truncated tail,
+# which previously hid the actual message and left only a stack traceback.
+run_nvim() {
+  local desc="$1" out rc=0
+  shift
+  out="$(nvim --headless "$@" +qa 2>&1)" || rc=$?
+  if [ "$rc" -ne 0 ] || printf '%s' "$out" | grep -qiE "^E[0-9]+:|stack traceback|Error executing"; then
+    warn "$desc: reported a problem"
+    printf '%s\n' "$out" | grep -vE "^\s*$" | tail -12 | sed 's/^/      /' >&2
+  else
+    skip "$desc: ok"
+  fi
+}
+
 # ---------------------------------------------------------------- symlinks ---
 # Relative targets, matching the existing layout (~/.zshrc -> dotfiles/.zshrc).
 link() {
@@ -242,11 +257,32 @@ provision_nvim() {
     return
   fi
   # Restore pins from the tracked lockfile rather than resolving plugin HEADs.
-  nvim --headless "+Lazy! restore" +qa 2>&1 | tail -3 || true
-  nvim --headless \
-    '+lua local c = require("nvim-treesitter.configs"); require("nvim-treesitter.install").ensure_installed_sync(c.get_ensure_installed_parsers())' \
-    +qa 2>&1 | tail -3 || true
-  nvim --headless +MasonToolsInstallSync +qa 2>&1 | tail -3 || true
+  run_nvim "plugins (Lazy restore)" "+Lazy! restore"
+
+  # On NixOS the parsers and language servers come from the system config:
+  # nvim-treesitter sees is_nix and turns auto_install off, and mason ships
+  # prebuilt binaries that assume an FHS layout and generally will not run.
+  # Worse, core/env.lua prepends mason/bin to PATH, so a broken mason binary
+  # would shadow the working Nix-provided one.
+  if is_nixos; then
+    skip "parsers: skipped, Nix provides them (auto_install is off here)"
+    skip "mason: skipped, its prebuilt binaries do not run under NixOS"
+    log "done; run ':checkhealth' to review"
+    return
+  fi
+
+  # Guarded: this uses the master-branch nvim-treesitter API, which does not
+  # exist on the rewritten main branch. Report instead of dumping a traceback.
+  run_nvim "treesitter parsers" '+lua
+    local ok_cfg, cfg = pcall(require, "nvim-treesitter.configs")
+    local ok_ins, ins = pcall(require, "nvim-treesitter.install")
+    if ok_cfg and ok_ins and cfg.get_ensure_installed_parsers then
+      ins.ensure_installed_sync(cfg.get_ensure_installed_parsers())
+    else
+      io.stderr:write("nvim-treesitter master API unavailable; run :TSUpdate by hand\n")
+    end'
+
+  run_nvim "mason tools" "+MasonToolsInstallSync"
   log "done; run ':checkhealth' to review"
 }
 
