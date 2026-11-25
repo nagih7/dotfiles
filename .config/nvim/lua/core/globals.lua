@@ -13,6 +13,18 @@ g.rainbow_delimiters = {
   end,
 }
 
+-- base46 reads vim.g.base46_cache at module load (`local cache_path = vim.g.base46_cache`),
+-- and on a fresh install lazy.nvim runs build hooks before plugin `init` hooks. Setting it
+-- here, before configs.lazy, keeps the first-run compile from failing on a nil cache path.
+g.base46_cache = string.format("%s/base46/", vim.fn.stdpath("data"))
+
+-- Route "+/"* through OSC 52 on headless hosts: no xclip/wl-copy can work without a
+-- DISPLAY, and nvim only auto-enables this when the terminal advertises osc52 in
+-- g.termfeatures, which tmux/ssh often hides. Harmless where a real provider exists.
+if vim.fn.has("unix") == 1 and vim.env.DISPLAY == nil and vim.env.WAYLAND_DISPLAY == nil then
+  g.clipboard = "osc52"
+end
+
 g.markdown_recommended_style = 0
 g.health = {
   style = nil, ---@type "float" | nil

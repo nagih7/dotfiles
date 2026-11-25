@@ -6,6 +6,11 @@ return {
     "nvim-treesitter/nvim-treesitter",
     name = "nvim-treesitter",
 
+    -- Pin master: the config below uses the `nvim-treesitter.configs` API, which only exists
+    -- on master. The repo's default branch is now `main` (rewritten API, no `configs` module),
+    -- so without this the pcall'd config() silently no-ops and nothing here is applied.
+    branch = "master",
+
     lazy = false,
     priority = 1000,
 

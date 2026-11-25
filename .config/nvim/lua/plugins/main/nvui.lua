@@ -43,11 +43,17 @@ return {
         silent = true,
       },
     },
-    init = function()
-      vim.g.base46_cache = string.format("%s/base46/", vim.fn.stdpath("data"))
-    end,
+    -- vim.g.base46_cache is set in core.globals, before lazy loads, so build hooks see it too.
     config = function()
       local base46_cache = vim.g.base46_cache
+
+      -- Nothing compiled yet (fresh install, or a build hook that failed): compile now,
+      -- otherwise readdir() aborts startup with E484 and the UI loads unthemed.
+      if vim.fn.isdirectory(base46_cache) == 0 or vim.tbl_isempty(vim.fn.readdir(base46_cache)) then
+        require("base46").load_all_highlights()
+        return
+      end
+
       for _, v in ipairs(vim.fn.readdir(base46_cache)) do
         dofile(string.format("%s/%s", base46_cache, v))
       end
