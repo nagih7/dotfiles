@@ -39,6 +39,10 @@ return {
     enabled = true,
   },
   {
+    import = "plugins.extras.languages.nix",
+    enabled = true,
+  },
+  {
     import = "plugins.extras.languages.python",
     enabled = true,
   },

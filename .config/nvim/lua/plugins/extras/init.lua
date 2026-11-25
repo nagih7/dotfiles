@@ -23,7 +23,18 @@ return {
     import = "plugins.extras.lsp",
     enabled = true,
   },
-  
+
+  -- Mason (server/tool installer)
+  -- NOTE: plugins/extras/mason/ has no init.lua, and lazy's `import` only picks up
+  -- `*.lua` and `*/init.lua` under the imported module. Without this entry the whole
+  -- group was never imported, so mason was not installed and every per-language
+  -- mason-tool-installer spec (all marked `optional = true`) was a silent no-op.
+  {
+    name = "Mason",
+    import = "plugins.extras.mason",
+    enabled = true,
+  },
+
   -- Git
   {
     name = "Git",

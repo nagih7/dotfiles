@@ -3,10 +3,14 @@ local is_executable = require("utils.executable").is_executable
 local lsp = require("configs.lsp")
 local lsps = require("preferences").lsp.force
 
+---Keep a forced server only when its binary is actually reachable.
+---The `pcall` guards servers with no resolvable config or a function-style `cmd`;
+---those cannot be probed, so they are let through and left to nvim to resolve.
 ---@param server_name string
+---@return boolean
 local function filter_executable(server_name)
   local success, result = pcall(function()
-    is_executable(vim.lsp.config[server_name].cmd[1])
+    return is_executable(vim.lsp.config[server_name].cmd[1])
   end)
   return not success or result
 end

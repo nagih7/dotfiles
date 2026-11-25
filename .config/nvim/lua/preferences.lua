@@ -18,6 +18,7 @@ local M = {
       "jsonls",
       "eslint",
       "terraformls",  -- Nix: terraform-ls
+      "ansiblels",    -- Nix: ansible-language-server
       "helm_ls",      -- Nix: helm-ls (via qvalentin/helm-ls.nvim or binary)
       "clangd",       -- Nix: clang-tools (C/C++)
     },

@@ -4,6 +4,7 @@ return {
   opts = {
     ---@type Mason.Package[]
     ensure_installed = {
+      "ansible-language-server", -- Used for LSP
       "ansible-lint",
     },
   },
